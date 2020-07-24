@@ -4,30 +4,38 @@
 
 namespace itertools
 {
-    template<typename T> class range
+    class range
     {
-    private:
-
-        class iter{
-        private:
-            T at;
-        public:
-            iter(T at) : at(at) {}
-            bool operator!=(iter const& other) const { return at != other.at; }
-            T const& operator*() const { return at; }
-            iter& operator++() { ++at; return *this; }
-        };
-
-        T first_val;
-        T last_val;
-
+        int first_val, last_val ;
     public:
-
-        range(T first_val, T last_val) :
-                first_val(first_val), last_val(last_val) { }
-        const iter begin() const{ return iter(first_val); }
-        const iter end()  const { return iter(last_val); }
-        iter begin() { return iter(first_val); }
-        iter end() { return iter(last_val); }
+        
+        class iterator
+        {
+            private:
+                int curr;
+            public:
+                iterator(int t): curr(t) {}
+             
+                int operator *() {return curr;}
+           
+                const iterator operator ++(int) 
+                {
+                    iterator t = *(this);
+                    curr ++;
+                    return t;
+                }
+                iterator& operator ++() 
+                {
+                    curr ++;
+                    return *(this);
+                }
+                bool operator !=(const iterator& other) const {return this->curr != other.curr;}
+                bool operator ==(const iterator& other) const {return this->curr == other.curr;}
+            };///end of iterator
+        
+            typedef int	value_type;
+            range(int first, int last): first_val(first), last_val(last){}
+            iterator begin(){ return iterator{first_val};} 
+            iterator end() {return iterator{last_val};}
     };
-};
+}
